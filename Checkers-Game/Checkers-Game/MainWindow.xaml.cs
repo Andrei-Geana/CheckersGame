@@ -23,6 +23,35 @@ namespace Checkers_Game
         public MainWindow()
         {
             InitializeComponent();
+            var board = this.FindName("Board") as Grid;
+
+            int n = 8;
+            for (int i = 0; i < n; i++)
+            {
+                ColumnDefinition column = new ColumnDefinition();
+                board.ColumnDefinitions.Add(column);
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                RowDefinition row = new RowDefinition();
+                board.RowDefinitions.Add(row);
+            }
+            for(int i=0; i < n; i++)
+            {
+                for(int j=0; j < n; j++)
+                {
+                    Button button = new Button
+                    {
+                        Content = '(' + i.ToString() + ',' + j.ToString() +')'
+                    };
+                    button.Margin = new Thickness(2);
+                    Grid.SetRow(button, i);
+                    Grid.SetColumn(button, j);
+                    board.Children.Add(button);
+                }
+            }
+            
         }
     }
 }
