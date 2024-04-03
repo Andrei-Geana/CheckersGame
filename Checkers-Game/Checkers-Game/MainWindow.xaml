@@ -37,8 +37,8 @@
             </Menu>
         </DockPanel>
 
-        <Grid Name="Board" Grid.Column="0" Grid.Row="1" Margin="5" >
-            <ItemsControl Name="grid" ItemsSource="{Binding GameBoard}" VerticalAlignment="Center" HorizontalAlignment="Center" >
+        <Grid Name="Board" Grid.Column="0" Grid.Row="1" Margin="5">
+            <ItemsControl Name="grid" ItemsSource="{Binding GameBoard}" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <ItemsControl ItemsSource="{Binding}">
@@ -49,33 +49,25 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-
-                                    <Border Width="50" Height="50" BorderThickness="2" BorderBrush="#000000">
-                                        <Button Command="" CommandParameter="">
-                                            <Button.Template>
-                                                <ControlTemplate>
-                                                    <Image Source="{Binding SimpleCell.Icon, TargetNullValue={x:Null}}" Stretch="UniformToFill">
-                                                        <Image.Style>
-                                                            <Style TargetType="Image">
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding SimpleCell}" Value="{x:Null}">
-                                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Image.Style>
-                                                    </Image>
-                                                </ControlTemplate>
-                                            </Button.Template>
-                                        </Button>
-                                    </Border>
+                                    <Grid>
+                                        <Rectangle Width="50" Height="50" Fill="{Binding SimpleCell.BackgroundColor, Mode=TwoWay}" Opacity="1"/>
+                                        <Border Width="50" Height="50" BorderThickness="2" BorderBrush="Black">
+                                            <Button Command="{Binding ClickCommand}" CommandParameter="{Binding SimpleCell}">
+                                                <Button.Template>
+                                                    <ControlTemplate>
+                                                        <Image Source="{Binding SimpleCell.Icon}" Stretch="UniformToFill"/>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+                                        </Border>
+                                    </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-
                         </ItemsControl>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
+
     </Grid>
 </Window>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Checkers_Game.ViewModel
 {
-    public class GameViewModel
+    public class GameViewModel : BaseViewModel
     {
         private GameLogic _gameLogic;
         private ObservableCollection<ObservableCollection<Cell>> _gameBoard;
@@ -47,5 +47,7 @@ namespace Checkers_Game.ViewModel
         public Player Player1 { get => _player1; set => _player1 = value; }
         public Player Player2 { get => _player2; set => _player2 = value; }
         public Player CurrentPlayer { get => _currentPlayer; set => _currentPlayer = value; }
+
+
     }
 }

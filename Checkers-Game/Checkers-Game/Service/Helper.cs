@@ -16,6 +16,10 @@ namespace Checkers_Game.Service
         public static string BlackPawnPath = "/Checkers-Game;component/Resource/blackpiece.png";
         public static string WhiteKingPath = "/Checkers-Game;component/Resource/whiteking.png";
         public static string BlackKingPath = "/Checkers-Game;component/Resource/blackking.png";
+        public static string TransparentPath = "/Checkers-Game;component/Resource/transparent.png";
+
+        public static string BlackColor = "#d18b47";
+        public static string WhiteColor = "#ffce9e";
 
         public static ObservableCollection<ObservableCollection<Cell>> GetNewBoard(int nrRows=8, int nrColumns=8)
         {

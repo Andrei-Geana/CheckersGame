@@ -9,6 +9,7 @@ namespace Checkers_Game.Model
     public enum PieceColorEnum
     {
         BLACK,
-        WHITE
+        WHITE,
+        BLUE
     }
 }

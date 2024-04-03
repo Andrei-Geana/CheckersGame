@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Checkers_Game.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,20 +19,36 @@ namespace Checkers_Game.Model
             Row = row;
             Column = column;
             Piece = piece;
-            BackgroundColor = _backgroundColor;
+            this._backgroundColor = _backgroundColor;
         }
 
         public int Row { get => _row; set => _row = value; }
         public int Column { get => _column; set => _column = value; }
         public Piece Piece { get => _piece; set => _piece = value; }
-        public PieceColorEnum BackgroundColor { get => _backgroundColor; set => _backgroundColor = value; }
+        public string BackgroundColor 
+        {
+            get
+            {
+                if (_backgroundColor == PieceColorEnum.BLACK)
+                    return Helper.BlackColor;
+                if (_backgroundColor == PieceColorEnum.WHITE)
+                    return Helper.WhiteColor;
+
+                //error check
+                return "";
+            }
+            set
+            {
+                _backgroundColor = PieceColorEnum.BLUE;
+            }
+        }
 
         public string Icon
         {
             get 
             {
                 if (_piece is null)
-                    return null;
+                    return Helper.TransparentPath;
                 return Piece.PathToIcon;
             }
 
