@@ -11,7 +11,7 @@ namespace Checkers_Game.Model
         private string _username;
         private PieceColorEnum _color;
         private int _score;
-        Player(string username, PieceColorEnum color, int score=0)
+        public Player(string username, PieceColorEnum color, int score=0)
         {
             Username = username;
             Color = color;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Checkers_Game.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,16 +24,16 @@ namespace Checkers_Game.Model
             get 
             {
                 if (Type == PieceTypeEnum.PAWN && Color == PieceColorEnum.BLACK)
-                    return "/Checkers-Game;component/Resource/blackpiece.png";
+                    return Helper.BlackPawnPath;
 
                 if (Type == PieceTypeEnum.PAWN && Color == PieceColorEnum.WHITE)
-                    return "/Checkers-Game;component/Resource/whitepiece.png";
+                    return Helper.WhitePawnPath;
 
                 if (Type == PieceTypeEnum.KING && Color == PieceColorEnum.BLACK)
-                    return "/Checkers-Game;component/Resource/blackking.png";
+                    return Helper.BlackKingPath;
 
                 if (Type == PieceTypeEnum.KING && Color == PieceColorEnum.WHITE)
-                    return "/Checkers-Game;component/Resource/whiteking.png";
+                    return Helper.WhiteKingPath;
 
                 //error check
                 return "";

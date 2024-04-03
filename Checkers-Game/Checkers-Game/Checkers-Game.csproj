@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Service\GameLogic.cs" />
     <Compile Include="Service\Helper.cs" />
     <Compile Include="ViewModel\CellViewModel.cs" />

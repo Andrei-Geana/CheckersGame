@@ -38,7 +38,7 @@
         </DockPanel>
 
         <Grid Name="Board" Grid.Column="0" Grid.Row="1" Margin="5" >
-            <ItemsControl Name="grid" ItemsSource="{Binding GameBoard}" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <ItemsControl Name="grid" ItemsSource="{Binding GameBoard}" VerticalAlignment="Center" HorizontalAlignment="Center" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <ItemsControl ItemsSource="{Binding}">
@@ -49,6 +49,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
+
                                     <Border Width="50" Height="50" BorderThickness="2" BorderBrush="#000000">
                                         <Button Command="" CommandParameter="">
                                             <Button.Template>

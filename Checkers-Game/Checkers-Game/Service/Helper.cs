@@ -12,38 +12,31 @@ namespace Checkers_Game.Service
     {
         Helper() { }
 
+        public static string WhitePawnPath = "/Checkers-Game;component/Resource/whitepiece.png";
+        public static string BlackPawnPath = "/Checkers-Game;component/Resource/blackpiece.png";
+        public static string WhiteKingPath = "/Checkers-Game;component/Resource/whiteking.png";
+        public static string BlackKingPath = "/Checkers-Game;component/Resource/blackking.png";
+
         public static ObservableCollection<ObservableCollection<Cell>> GetNewBoard(int nrRows=8, int nrColumns=8)
         {
             ObservableCollection<ObservableCollection<Cell>> board = new ObservableCollection<ObservableCollection<Cell>>();
-            for(int i=0;i<nrRows;++i)
+            for (int i = 0; i < nrRows; ++i)
             {
-                ObservableCollection<Cell> row = new ObservableCollection<Cell> ();
-                for(int j=0;j<nrColumns;++j)
+                ObservableCollection<Cell> row = new ObservableCollection<Cell>();
+                for (int j = 0; j < nrColumns; ++j)
                 {
-                    Cell cell = new Cell(i, j, PieceColorEnum.WHITE);
+                    PieceColorEnum backgroundColor = (i + j) % 2 != 0 ? PieceColorEnum.BLACK : PieceColorEnum.WHITE;
+                    Cell cell = new Cell(i, j, backgroundColor);
 
-                    if ((i + j) % 2 != 0)
+                    if (i < 3 && (i + j) % 2 != 0)
                     {
-                        cell.BackgroundColor = PieceColorEnum.BLACK;
+                        cell.Piece = new Piece(PieceTypeEnum.PAWN, PieceColorEnum.WHITE);
+                    }
+                    else if (i > 4 && (i + j) % 2 != 0)
+                    {
+                        cell.Piece = new Piece(PieceTypeEnum.PAWN, PieceColorEnum.BLACK);
                     }
 
-                    if (i < 3)
-                    {
-                        if ((i + j) % 2 != 0)
-                        {
-                            cell.Piece = new Piece(PieceTypeEnum.PAWN, PieceColorEnum.WHITE);
-                        }
-                    }
-                    else
-                    {
-                        if(i>4)
-                        {
-                            if ((i + j) % 2 != 0)
-                            {
-                                cell.Piece = new Piece(PieceTypeEnum.PAWN, PieceColorEnum.BLACK);
-                            }
-                        }
-                    }
                     row.Add(cell);
                 }
                 board.Add(row);
