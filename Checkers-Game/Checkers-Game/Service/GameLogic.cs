@@ -75,8 +75,11 @@ namespace Checkers_Game.Service
             if (currentCell == null) return false;
             if (firstSelectedCell == null)
                 return currentCell.SimpleCell.Piece != null && currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color;
-
-            return (currentCell.SimpleCell.Piece == null) && possibleMoves.Contains(currentCell);
+            if (currentCell == firstSelectedCell)
+                return true;
+            if (currentCell.SimpleCell.Piece != null && currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color)
+                return true;
+            return possibleMoves.Contains(currentCell);
             //return (currentCell.SimpleCell.Piece == null) || (currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color);
         }
 
