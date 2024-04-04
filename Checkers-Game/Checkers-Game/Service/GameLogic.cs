@@ -14,8 +14,9 @@ namespace Checkers_Game.Service
     public class GameLogic
     {
         private GameViewModel game;
-        private CellViewModel firstCell = null;
-        private CellViewModel secondCell = null;
+        private CellViewModel firstSelectedCell = null;
+        List<CellViewModel> possibleMoves;
+
         public GameLogic(GameViewModel gameViewModel) { game = gameViewModel; }
 
 
@@ -26,28 +27,38 @@ namespace Checkers_Game.Service
         //  -firstCell a fost deja selectat, iar obj este un spatiu gol => se va muta piesa de la firstCell la obj
         public void ClickAction(CellViewModel obj)
         {
-            if (firstCell == null)
+            if (firstSelectedCell == null)
             {
                 //this should be replaced with changing the color of BackgroundColor
                 //MessageBox.Show("Ai apasat un buton de la " + obj.SimpleCell.Row.ToString() + "," + obj.SimpleCell.Column.ToString());
-                firstCell = obj;
-                ChangeBackgroundColorForSelectedCell();
+                firstSelectedCell = obj;
+                ChangeBackgroundColor(firstSelectedCell, PieceColorEnum.BLUE);
+                ShowPossibleMoves();
             }
             else
             {
-                if (obj == firstCell)  return;
+                if (obj == firstSelectedCell)
+                {
+                    RevertToOriginalBackgroundColor(firstSelectedCell);
+                    RevertPossibleMoves();
+                    firstSelectedCell = null;
+                    return;
+                }
                 if(obj.SimpleCell.Piece!=null && obj.SimpleCell.Piece.Color == game.CurrentPlayer.Color)
                 {
                     //here firstCell should reset color and obj should get the selectedCell color
-                    RevertToOriginalBackgroundColor(firstCell);
-                    firstCell = obj;
-                    ChangeBackgroundColorForSelectedCell();
+                    RevertToOriginalBackgroundColor(firstSelectedCell);
+                    RevertPossibleMoves();
+                    firstSelectedCell = obj;
+                    ShowPossibleMoves();
+                    ChangeBackgroundColor(firstSelectedCell, PieceColorEnum.BLUE);
                     return;
                 }
 
                 //  trebuie sa se verifice daca sare peste o piesa sau mutarea este valabila
-                RevertToOriginalBackgroundColor(firstCell);
-                SwitchPiece(obj, firstCell);
+                RevertToOriginalBackgroundColor(firstSelectedCell);
+                RevertPossibleMoves();
+                SwitchPiece(obj, firstSelectedCell);
                 CheckForPromotion(obj);
                 SwitchPlayerTurn();
                 
@@ -62,9 +73,11 @@ namespace Checkers_Game.Service
         public bool IsClickable(CellViewModel currentCell)
         {
             if (currentCell == null) return false;
-            if (firstCell == null)
+            if (firstSelectedCell == null)
                 return currentCell.SimpleCell.Piece != null && currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color;
-            return (currentCell.SimpleCell.Piece == null) || (currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color);
+
+            return (currentCell.SimpleCell.Piece == null) && possibleMoves.Contains(currentCell);
+            //return (currentCell.SimpleCell.Piece == null) || (currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color);
         }
 
         private void SwitchPiece(CellViewModel toCell, CellViewModel fromCell)
@@ -81,8 +94,7 @@ namespace Checkers_Game.Service
                 game.CurrentPlayer = game.Player2;
             else
                 game.CurrentPlayer = game.Player1;
-            firstCell = null;
-            secondCell = null;
+            firstSelectedCell = null;
         }
         private void CheckForPromotion(CellViewModel obj)
         {
@@ -95,14 +107,44 @@ namespace Checkers_Game.Service
 
         private void RevertToOriginalBackgroundColor(CellViewModel obj)
         {
-            Helper.ResetColor(firstCell);
-            firstCell.NotifyThatPieceChanged();
+            Helper.ResetColor(obj);
+            obj.NotifyThatPieceChanged();
+        }
+        private void ChangeBackgroundColor(CellViewModel obj, PieceColorEnum color)
+        {
+            switch(color)
+            {
+                case PieceColorEnum.WHITE:
+                    obj.SimpleCell.BackgroundColor = nameof(PieceColorEnum.WHITE);
+                    break;
+                case PieceColorEnum.BLACK:
+                    obj.SimpleCell.BackgroundColor = nameof(PieceColorEnum.BLACK);
+                    break;
+                case PieceColorEnum.BLUE:
+                    obj.SimpleCell.BackgroundColor = nameof(PieceColorEnum.BLUE);
+                    break;
+                case PieceColorEnum.GREEN:
+                    obj.SimpleCell.BackgroundColor = nameof(PieceColorEnum.GREEN);
+                    break;
+            }
+            obj.NotifyThatPieceChanged();
         }
 
-        private void ChangeBackgroundColorForSelectedCell()
+        private void ShowPossibleMoves() 
         {
-            firstCell.SimpleCell.BackgroundColor = nameof(PieceColorEnum.BLUE);
-            firstCell.NotifyThatPieceChanged();
+            possibleMoves = game.GetReachableCells(firstSelectedCell);
+            foreach(var item in possibleMoves)
+            {
+                ChangeBackgroundColor(item, PieceColorEnum.GREEN);
+            }
+        }
+
+        private void RevertPossibleMoves()
+        {
+            foreach (var item in possibleMoves)
+            {
+                RevertToOriginalBackgroundColor(item);
+            }
         }
     }
 }

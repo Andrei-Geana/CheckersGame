@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Automation.Peers;
 
 namespace Checkers_Game.ViewModel
 {
@@ -57,6 +58,42 @@ namespace Checkers_Game.ViewModel
             }
         }
 
+        private List<CellViewModel> GetReachableCellsForIndices(CellViewModel currentCell, List<Tuple<int,int>> moveIndices)
+        {
+            List<CellViewModel> reachableCells = new List<CellViewModel>();
+            foreach (var move in moveIndices)
+            {
+                int newRow = currentCell.SimpleCell.Row + move.Item1;
+                int newColumn = currentCell.SimpleCell.Column + move.Item2;
+                if (!Helper.IsInBoard(newRow, newColumn))
+                    continue;
+                if (GameBoard[newRow][newColumn].SimpleCell.Piece != null)
+                    continue;
+                reachableCells.Add(GameBoard[newRow][newColumn]);
+            }
+            return reachableCells;
+        }
 
+        public List<CellViewModel> GetReachableCells(CellViewModel currentCell)
+        {
+            List<CellViewModel> reachableCells = null;
+
+            switch(currentCell.SimpleCell.Piece.Color)
+            {
+                case PieceColorEnum.BLACK:
+                    if (currentCell.SimpleCell.Icon == Helper.BlackPawnPath)
+                        reachableCells = GetReachableCellsForIndices(currentCell, Helper.moveIndicesForBlack);
+                    else
+                        reachableCells = GetReachableCellsForIndices(currentCell, Helper.moveIndicesForKings);
+                    break;
+                case PieceColorEnum.WHITE:
+                    if (currentCell.SimpleCell.Icon == Helper.WhitePawnPath)
+                        reachableCells = GetReachableCellsForIndices(currentCell, Helper.moveIndicesForWhite);
+                    else
+                        reachableCells = GetReachableCellsForIndices(currentCell, Helper.moveIndicesForKings);
+                    break;
+            }
+            return reachableCells;
+        }
     }
 }

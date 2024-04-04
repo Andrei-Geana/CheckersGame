@@ -13,6 +13,35 @@ namespace Checkers_Game.Service
     {
         Helper() { }
 
+        //move for kings
+        /*
+                Tuple.Create(-1, 1),
+                Tuple.Create(1, 1),
+                Tuple.Create(1, -1),
+                Tuple.Create(-1, -1)
+         */
+
+        static Helper()
+        {
+            moveIndicesForWhite = new List<Tuple<int, int>>
+            {
+                Tuple.Create(1, 1),
+                Tuple.Create(1, -1)
+            };
+
+            moveIndicesForBlack = new List<Tuple<int, int>>
+            {
+                Tuple.Create(-1, 1),
+                Tuple.Create(-1, -1)
+            };
+
+            moveIndicesForKings = new List<Tuple<int, int>>();
+            foreach (var item in moveIndicesForWhite)
+                moveIndicesForKings.Add(item);
+            foreach (var item in moveIndicesForBlack)
+                moveIndicesForKings.Add(item);
+        }
+
         public static int numberOfRows = 8;
         public static int numberOfColumns = 8;
 
@@ -26,6 +55,10 @@ namespace Checkers_Game.Service
         public static string WhiteColor = "#ffce9e";
         public static string BlueColor  = "#0000ff";
         public static string GreenColor = "#33cc33";
+
+        public static List<Tuple<int, int>> moveIndicesForWhite;
+        public static List<Tuple<int, int>> moveIndicesForBlack;
+        public static List<Tuple<int, int>> moveIndicesForKings;
 
         public static ObservableCollection<ObservableCollection<Cell>> GetNewBoard(int nrRows=0, int nrColumns=0)
         {
@@ -77,6 +110,11 @@ namespace Checkers_Game.Service
                     obj.SimpleCell.BackgroundColor = nameof(PieceColorEnum.WHITE);
                     break;
             }
+        }
+
+        public static bool IsInBoard(int row, int column)
+        {
+            return ((row >= 0 && row < numberOfRows) && (column >= 0 && column < numberOfColumns));
         }
     }
 }
