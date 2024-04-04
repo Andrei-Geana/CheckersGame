@@ -23,7 +23,7 @@ namespace Checkers_Game.ViewModel
             _gameBoard = Helper.GetNewBoard();
             GameBoard = CellBoardToCellVMBoard(_gameBoard);
             Player1 = new Player("player1", PieceColorEnum.BLACK);
-            Player2 = new Player("player2", PieceColorEnum.BLACK);
+            Player2 = new Player("player2", PieceColorEnum.WHITE);
             CurrentPlayer = Player1;
         }
 

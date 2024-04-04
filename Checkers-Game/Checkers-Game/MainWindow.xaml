@@ -38,7 +38,7 @@
         </DockPanel>
 
         <Grid Name="Board" Grid.Column="0" Grid.Row="1" Margin="5">
-            <ItemsControl Name="grid" ItemsSource="{Binding GameBoard}" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <ItemsControl Name="grid" ItemsSource="{Binding GameBoard, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <ItemsControl ItemsSource="{Binding}">
@@ -50,12 +50,12 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <Rectangle Width="50" Height="50" Fill="{Binding SimpleCell.BackgroundColor, Mode=TwoWay}" Opacity="1"/>
+                                        <Rectangle Width="50" Height="50" Fill="{Binding SimpleCell.BackgroundColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Opacity="1"/>
                                         <Border Width="50" Height="50" BorderThickness="2" BorderBrush="Black">
-                                            <Button Command="{Binding ClickCommand}" CommandParameter="{Binding SimpleCell}">
+                                            <Button Command="{Binding ClickCommand}" CommandParameter="{Binding}">
                                                 <Button.Template>
                                                     <ControlTemplate>
-                                                        <Image Source="{Binding SimpleCell.Icon}" Stretch="UniformToFill"/>
+                                                        <Image Source="{Binding SimpleCell.Icon, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Stretch="UniformToFill"/>
                                                     </ControlTemplate>
                                                 </Button.Template>
                                             </Button>

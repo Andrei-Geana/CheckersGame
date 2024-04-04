@@ -12,6 +12,9 @@ namespace Checkers_Game.Service
     {
         Helper() { }
 
+        public static int numberOfRows = 8;
+        public static int numberOfColumns = 8;
+
         public static string WhitePawnPath = "/Checkers-Game;component/Resource/whitepiece.png";
         public static string BlackPawnPath = "/Checkers-Game;component/Resource/blackpiece.png";
         public static string WhiteKingPath = "/Checkers-Game;component/Resource/whiteking.png";
@@ -21,8 +24,19 @@ namespace Checkers_Game.Service
         public static string BlackColor = "#d18b47";
         public static string WhiteColor = "#ffce9e";
 
-        public static ObservableCollection<ObservableCollection<Cell>> GetNewBoard(int nrRows=8, int nrColumns=8)
+        public static ObservableCollection<ObservableCollection<Cell>> GetNewBoard(int nrRows=0, int nrColumns=0)
         {
+            if (nrRows == 0)
+            {
+                nrRows = numberOfRows;
+                nrColumns = numberOfColumns;
+            }
+            else
+            {
+                numberOfRows = nrRows;
+                numberOfColumns = nrColumns;
+            }
+
             ObservableCollection<ObservableCollection<Cell>> board = new ObservableCollection<ObservableCollection<Cell>>();
             for (int i = 0; i < nrRows; ++i)
             {

@@ -13,14 +13,23 @@ namespace Checkers_Game.ViewModel
     public class CellViewModel : BaseViewModel
     {
         GameLogic bl;
+        private Cell _cell;
         public CellViewModel(Cell currentCell, GameLogic bl)
         {
-            SimpleCell = currentCell;
+            _cell = currentCell;
             this.bl = bl;
         }
 
         //am adus celula din Model in VM
-        public Cell SimpleCell { get; set; }
+        public Cell SimpleCell 
+        { 
+            get => _cell;
+            set
+            {
+                _cell = value;
+                OnPropertyChanged(nameof(SimpleCell));
+            }
+        }
 
         private ICommand clickCommand;
         public ICommand ClickCommand
@@ -29,7 +38,7 @@ namespace Checkers_Game.ViewModel
             {
                 if (clickCommand == null)
                 {
-                    clickCommand = new RelayCommand<Cell>(bl.ClickAction, bl.IsClickable);
+                    clickCommand = new RelayCommand<CellViewModel>(bl.ClickAction, bl.IsClickable);
                 }
                 return clickCommand;
             }
