@@ -68,7 +68,19 @@ namespace Checkers_Game.ViewModel
                 if (!Helper.IsInBoard(newRow, newColumn))
                     continue;
                 if (GameBoard[newRow][newColumn].SimpleCell.Piece != null)
+                {
+                    if(GameBoard[newRow][newColumn].SimpleCell.Piece.Color != currentCell.SimpleCell.Piece.Color)
+                    {
+                        int newOverRow = newRow + move.Item1;
+                        int newOverColumn = newColumn + move.Item2;
+                        if (!Helper.IsInBoard(newOverRow, newOverColumn))
+                            continue;
+                        if (GameBoard[newOverRow][newOverColumn].SimpleCell.Piece != null)
+                            continue;
+                        reachableCells.Add(GameBoard[newOverRow][newOverColumn]);
+                    }
                     continue;
+                }
                 reachableCells.Add(GameBoard[newRow][newColumn]);
             }
             return reachableCells;
@@ -94,6 +106,12 @@ namespace Checkers_Game.ViewModel
                     break;
             }
             return reachableCells;
+        }
+
+        public void EliminatePieceAt(int row, int column)
+        {
+            GameBoard[row][column].SimpleCell.Piece = null;
+            GameBoard[row][column].NotifyThatPieceChanged();
         }
     }
 }

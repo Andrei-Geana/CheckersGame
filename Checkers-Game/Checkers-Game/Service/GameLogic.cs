@@ -19,17 +19,10 @@ namespace Checkers_Game.Service
 
         public GameLogic(GameViewModel gameViewModel) { game = gameViewModel; }
 
-
-        //scenarii:
-        //  -firstCell nu a fost selectat inca -> se seteaza firstCell, se modifica culoarea si se modifica toate mutarile posibile pentru ilustrare
-        //  -firstCell a fost deja selectat, dar obj este chiar firstCell => nu se intampla nimic
-        //  -firstCell a fost deja selectat, dar obj este o piesa de aceeasi culoare => firstCell devine obj si se reseteaza/seteaza culorile
-        //  -firstCell a fost deja selectat, iar obj este un spatiu gol => se va muta piesa de la firstCell la obj
         public void ClickAction(CellViewModel obj)
         {
             if (firstSelectedCell == null)
             {
-                //this should be replaced with changing the color of BackgroundColor
                 //MessageBox.Show("Ai apasat un buton de la " + obj.SimpleCell.Row.ToString() + "," + obj.SimpleCell.Column.ToString());
                 firstSelectedCell = obj;
                 ChangeBackgroundColor(firstSelectedCell, PieceColorEnum.BLUE);
@@ -46,7 +39,6 @@ namespace Checkers_Game.Service
                 }
                 if(obj.SimpleCell.Piece!=null && obj.SimpleCell.Piece.Color == game.CurrentPlayer.Color)
                 {
-                    //here firstCell should reset color and obj should get the selectedCell color
                     RevertToOriginalBackgroundColor(firstSelectedCell);
                     RevertPossibleMoves();
                     firstSelectedCell = obj;
@@ -55,7 +47,6 @@ namespace Checkers_Game.Service
                     return;
                 }
 
-                //  trebuie sa se verifice daca sare peste o piesa sau mutarea este valabila
                 RevertToOriginalBackgroundColor(firstSelectedCell);
                 RevertPossibleMoves();
                 SwitchPiece(obj, firstSelectedCell);
@@ -65,26 +56,34 @@ namespace Checkers_Game.Service
             }
         }
 
-
-        //  daca nu a fost selectata inca o piesa, se pot selecta doar piesele care au aceeasi culoare ca currentPlayer din GameViewModel
-        //  daca a fost selectata o prima piesa, atunci se poate selecta o alta piesa de aceeasi culoare, sau se va selecta o celula goala si se va seta secondNode
-        
-        //  trebuie sa adaug ca doar mutarile posibile sa fie selectabile
         public bool IsClickable(CellViewModel currentCell)
         {
             if (currentCell == null) return false;
+
             if (firstSelectedCell == null)
                 return currentCell.SimpleCell.Piece != null && currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color;
+
             if (currentCell == firstSelectedCell)
                 return true;
+
             if (currentCell.SimpleCell.Piece != null && currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color)
                 return true;
+
             return possibleMoves.Contains(currentCell);
-            //return (currentCell.SimpleCell.Piece == null) || (currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color);
         }
 
         private void SwitchPiece(CellViewModel toCell, CellViewModel fromCell)
         {
+            if (toCell.SimpleCell.Piece == null)
+            {
+                int row = (toCell.SimpleCell.Row + fromCell.SimpleCell.Row) / 2;
+                int column = (toCell.SimpleCell.Column + fromCell.SimpleCell.Column) / 2;
+                if ((row == toCell.SimpleCell.Row && column == toCell.SimpleCell.Column) || (row == fromCell.SimpleCell.Row && column == fromCell.SimpleCell.Column)) ;
+                else
+                {
+                    game.EliminatePieceAt(row, column);
+                }
+            }
             toCell.SimpleCell.Piece = fromCell.SimpleCell.Piece;
             fromCell.SimpleCell.Piece = null;
             toCell.NotifyThatPieceChanged();
