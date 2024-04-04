@@ -29,17 +29,44 @@ namespace Checkers_Game.Model
         {
             get
             {
+                switch(_backgroundColor)
+                {
+                    case PieceColorEnum.WHITE:
+                        return Helper.WhiteColor;
+                    case PieceColorEnum.BLACK:
+                        return Helper.BlackColor;
+                    case PieceColorEnum.BLUE:
+                        return Helper.BlueColor;
+                    case PieceColorEnum.GREEN:
+                        return Helper.GreenColor;
+                }
                 if (_backgroundColor == PieceColorEnum.BLACK)
                     return Helper.BlackColor;
                 if (_backgroundColor == PieceColorEnum.WHITE)
                     return Helper.WhiteColor;
 
                 //error check
-                return "";
+                throw new ArgumentOutOfRangeException(nameof(BackgroundColor));
             }
             set
             {
-                _backgroundColor = PieceColorEnum.BLUE;
+                switch(value)
+                {
+                    case "WHITE":
+                        _backgroundColor = PieceColorEnum.WHITE;
+                        break;
+                    case "BLACK":
+                        _backgroundColor = PieceColorEnum.BLACK;
+                        break;
+                    case "BLUE":
+                        _backgroundColor = PieceColorEnum.BLUE;
+                        break;
+                    case "GREEN":
+                        _backgroundColor = PieceColorEnum.GREEN;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(BackgroundColor));
+                }
             }
         }
 

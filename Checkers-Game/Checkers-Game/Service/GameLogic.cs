@@ -29,8 +29,10 @@ namespace Checkers_Game.Service
             if (firstCell == null)
             {
                 //this should be replaced with changing the color of BackgroundColor
-                MessageBox.Show("Ai apasat un buton de la " + obj.SimpleCell.Row.ToString() + "," + obj.SimpleCell.Column.ToString());
+                //MessageBox.Show("Ai apasat un buton de la " + obj.SimpleCell.Row.ToString() + "," + obj.SimpleCell.Column.ToString());
                 firstCell = obj;
+                firstCell.SimpleCell.BackgroundColor = nameof(PieceColorEnum.BLUE);
+                firstCell.NotifyThatPieceChanged();
             }
             else
             {
@@ -38,12 +40,18 @@ namespace Checkers_Game.Service
                 if(obj.SimpleCell.Piece!=null && obj.SimpleCell.Piece.Color == game.CurrentPlayer.Color)
                 {
                     //here firstCell should reset color and obj should get the selectedCell color
+                    Helper.ResetColor(firstCell);
+                    firstCell.NotifyThatPieceChanged();
                     firstCell = obj;
+                    firstCell.SimpleCell.BackgroundColor = nameof(PieceColorEnum.BLUE);
+                    firstCell.NotifyThatPieceChanged();
                     return;
                 }
 
                 //  trebuie sa se verifice daca sare peste o piesa sau mutarea este valabila
                 SwitchPiece(obj, firstCell);
+                Helper.ResetColor(firstCell);
+                firstCell.NotifyThatPieceChanged();
                 CheckForPromotion(obj);
                 SwitchPlayerTurn();
                 
@@ -67,8 +75,8 @@ namespace Checkers_Game.Service
         {
             toCell.SimpleCell.Piece = fromCell.SimpleCell.Piece;
             fromCell.SimpleCell.Piece = null;
-            toCell.OnPropertyChanged(nameof(toCell.SimpleCell));
-            fromCell.OnPropertyChanged(nameof(fromCell.SimpleCell));
+            toCell.NotifyThatPieceChanged();
+            fromCell.NotifyThatPieceChanged();
         }
 
         private void SwitchPlayerTurn()
@@ -86,7 +94,7 @@ namespace Checkers_Game.Service
                 obj.SimpleCell.Piece.RankUp();
             else if (obj.SimpleCell.Row == (Helper.numberOfRows-1) && obj.SimpleCell.Piece.Color == PieceColorEnum.WHITE)
                 obj.SimpleCell.Piece.RankUp();
-            obj.OnPropertyChanged(nameof(obj.SimpleCell));
+            obj.NotifyThatPieceChanged();
         }
     }
 }

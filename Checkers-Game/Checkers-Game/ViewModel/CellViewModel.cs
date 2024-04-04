@@ -44,5 +44,10 @@ namespace Checkers_Game.ViewModel
             }
         }
 
+        public void NotifyThatPieceChanged()
+        {
+            OnPropertyChanged(nameof(SimpleCell));
+        }
+
     }
 }

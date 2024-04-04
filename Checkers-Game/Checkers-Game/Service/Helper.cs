@@ -1,4 +1,5 @@
 ﻿using Checkers_Game.Model;
+using Checkers_Game.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,6 +24,8 @@ namespace Checkers_Game.Service
 
         public static string BlackColor = "#d18b47";
         public static string WhiteColor = "#ffce9e";
+        public static string BlueColor  = "#0000ff";
+        public static string GreenColor = "#33cc33";
 
         public static ObservableCollection<ObservableCollection<Cell>> GetNewBoard(int nrRows=0, int nrColumns=0)
         {
@@ -60,6 +63,20 @@ namespace Checkers_Game.Service
                 board.Add(row);
             }
             return board;
+        }
+
+        public static void ResetColor(CellViewModel obj)
+        {
+            PieceColorEnum color = (obj.SimpleCell.Row + obj.SimpleCell.Column) % 2 != 0 ? PieceColorEnum.BLACK : PieceColorEnum.WHITE;
+            switch(color)
+            {
+                case PieceColorEnum.BLACK:
+                    obj.SimpleCell.BackgroundColor = nameof(PieceColorEnum.BLACK);
+                    break;
+                case PieceColorEnum.WHITE:
+                    obj.SimpleCell.BackgroundColor = nameof(PieceColorEnum.WHITE);
+                    break;
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ namespace Checkers_Game.Model
     {
         BLACK,
         WHITE,
-        BLUE
+        BLUE,
+        GREEN
     }
 }
