@@ -46,7 +46,16 @@ namespace Checkers_Game.ViewModel
         public ObservableCollection<ObservableCollection<CellViewModel>> GameBoard { get; set; }
         public Player Player1 { get => _player1; set => _player1 = value; }
         public Player Player2 { get => _player2; set => _player2 = value; }
-        public Player CurrentPlayer { get => _currentPlayer; set => _currentPlayer = value; }
+        public Player CurrentPlayer 
+        { 
+            get => _currentPlayer;
+            set
+            {
+                if(_currentPlayer == value) return;
+                _currentPlayer = value;
+                OnPropertyChanged(nameof(CurrentPlayer));
+            }
+        }
 
 
     }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Checkers_Game" xmlns:local1="clr-namespace:Checkers_Game.ViewModel"
         mc:Ignorable="d"
-        Title="Checkers" Height="450" Width="800">
+        Title="Checkers" Height="500" Width="800">
     <Window.DataContext>
         <local1:GameViewModel/>
     </Window.DataContext>
@@ -68,6 +68,8 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
-
+        <Label Grid.Row="1" Grid.Column="1" FontSize="15" Margin="10,165,-10,-165">Now moving:</Label>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentPlayer.Color, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25"/>
     </Grid>
 </Window>

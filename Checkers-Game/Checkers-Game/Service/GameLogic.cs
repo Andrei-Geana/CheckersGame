@@ -31,8 +31,7 @@ namespace Checkers_Game.Service
                 //this should be replaced with changing the color of BackgroundColor
                 //MessageBox.Show("Ai apasat un buton de la " + obj.SimpleCell.Row.ToString() + "," + obj.SimpleCell.Column.ToString());
                 firstCell = obj;
-                firstCell.SimpleCell.BackgroundColor = nameof(PieceColorEnum.BLUE);
-                firstCell.NotifyThatPieceChanged();
+                ChangeBackgroundColorForSelectedCell();
             }
             else
             {
@@ -40,18 +39,15 @@ namespace Checkers_Game.Service
                 if(obj.SimpleCell.Piece!=null && obj.SimpleCell.Piece.Color == game.CurrentPlayer.Color)
                 {
                     //here firstCell should reset color and obj should get the selectedCell color
-                    Helper.ResetColor(firstCell);
-                    firstCell.NotifyThatPieceChanged();
+                    RevertToOriginalBackgroundColor(firstCell);
                     firstCell = obj;
-                    firstCell.SimpleCell.BackgroundColor = nameof(PieceColorEnum.BLUE);
-                    firstCell.NotifyThatPieceChanged();
+                    ChangeBackgroundColorForSelectedCell();
                     return;
                 }
 
                 //  trebuie sa se verifice daca sare peste o piesa sau mutarea este valabila
+                RevertToOriginalBackgroundColor(firstCell);
                 SwitchPiece(obj, firstCell);
-                Helper.ResetColor(firstCell);
-                firstCell.NotifyThatPieceChanged();
                 CheckForPromotion(obj);
                 SwitchPlayerTurn();
                 
@@ -95,6 +91,18 @@ namespace Checkers_Game.Service
             else if (obj.SimpleCell.Row == (Helper.numberOfRows-1) && obj.SimpleCell.Piece.Color == PieceColorEnum.WHITE)
                 obj.SimpleCell.Piece.RankUp();
             obj.NotifyThatPieceChanged();
+        }
+
+        private void RevertToOriginalBackgroundColor(CellViewModel obj)
+        {
+            Helper.ResetColor(firstCell);
+            firstCell.NotifyThatPieceChanged();
+        }
+
+        private void ChangeBackgroundColorForSelectedCell()
+        {
+            firstCell.SimpleCell.BackgroundColor = nameof(PieceColorEnum.BLUE);
+            firstCell.NotifyThatPieceChanged();
         }
     }
 }
