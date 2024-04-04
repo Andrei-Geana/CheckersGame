@@ -28,6 +28,7 @@ namespace Checkers_Game.Service
         {
             if (firstCell == null)
             {
+                //this should be replaced with changing the color of BackgroundColor
                 MessageBox.Show("Ai apasat un buton de la " + obj.SimpleCell.Row.ToString() + "," + obj.SimpleCell.Column.ToString());
                 firstCell = obj;
             }
@@ -36,6 +37,7 @@ namespace Checkers_Game.Service
                 if (obj == firstCell)  return;
                 if(obj.SimpleCell.Piece!=null && obj.SimpleCell.Piece.Color == game.CurrentPlayer.Color)
                 {
+                    //here firstCell should reset color and obj should get the selectedCell color
                     firstCell = obj;
                     return;
                 }
