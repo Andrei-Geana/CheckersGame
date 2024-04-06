@@ -15,7 +15,12 @@ namespace Checkers_Game.Service
     {
         private GameViewModel game;
         private CellViewModel firstSelectedCell = null;
-        List<CellViewModel> possibleMoves;
+
+        //toCell, bool if it eliminates enemy piece
+        Dictionary<CellViewModel, bool> possibleMoves;
+
+        bool eliminatedAPiece = false;
+        bool canMultipleJump = true;
 
         public GameLogic(GameViewModel gameViewModel) { game = gameViewModel; }
 
@@ -42,8 +47,8 @@ namespace Checkers_Game.Service
                     RevertToOriginalBackgroundColor(firstSelectedCell);
                     RevertPossibleMoves();
                     firstSelectedCell = obj;
-                    ShowPossibleMoves();
                     ChangeBackgroundColor(firstSelectedCell, PieceColorEnum.BLUE);
+                    ShowPossibleMoves();
                     return;
                 }
 
@@ -51,7 +56,24 @@ namespace Checkers_Game.Service
                 RevertPossibleMoves();
                 SwitchPiece(obj, firstSelectedCell);
                 CheckForPromotion(obj);
-                SwitchPlayerTurn();
+
+                if (eliminatedAPiece is true && canMultipleJump is true)
+                {
+                    ShowPossibleMoves();
+                    KeepOnlyMovesThatEliminateEnemyPiece();
+                    if (possibleMoves.Count < 1)
+                    {
+                        //RevertPossibleMoves();
+                        SwitchPlayerTurn();
+                    }
+                    else
+                    {
+                        ChangeBackgroundColor(firstSelectedCell, PieceColorEnum.BLUE);
+                        //ShowPossibleMoves();
+                    }
+                }
+                else 
+                    SwitchPlayerTurn();
                 
             }
         }
@@ -63,31 +85,38 @@ namespace Checkers_Game.Service
             if (firstSelectedCell == null)
                 return currentCell.SimpleCell.Piece != null && currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color;
 
+            if (canMultipleJump is true && eliminatedAPiece is true)
+            {
+                return possibleMoves.ContainsKey(currentCell);
+            }
+
             if (currentCell == firstSelectedCell)
                 return true;
 
             if (currentCell.SimpleCell.Piece != null && currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color)
                 return true;
-
-            return possibleMoves.Contains(currentCell);
+            return possibleMoves.ContainsKey(currentCell);
         }
 
         private void SwitchPiece(CellViewModel toCell, CellViewModel fromCell)
         {
-            if (toCell.SimpleCell.Piece == null)
+            if (possibleMoves[toCell] is true)
             {
                 int row = (toCell.SimpleCell.Row + fromCell.SimpleCell.Row) / 2;
                 int column = (toCell.SimpleCell.Column + fromCell.SimpleCell.Column) / 2;
-                if ((row == toCell.SimpleCell.Row && column == toCell.SimpleCell.Column) || (row == fromCell.SimpleCell.Row && column == fromCell.SimpleCell.Column)) ;
-                else
-                {
-                    game.EliminatePieceAt(row, column);
-                }
+                game.EliminatePieceAt(row, column);
+                eliminatedAPiece = true;
             }
             toCell.SimpleCell.Piece = fromCell.SimpleCell.Piece;
             fromCell.SimpleCell.Piece = null;
             toCell.NotifyThatPieceChanged();
             fromCell.NotifyThatPieceChanged();
+
+            //for multiplejump
+            if (canMultipleJump is true && eliminatedAPiece is true)
+            {
+                firstSelectedCell = toCell;
+            }
         }
 
         private void SwitchPlayerTurn()
@@ -97,6 +126,7 @@ namespace Checkers_Game.Service
             else
                 game.CurrentPlayer = game.Player1;
             firstSelectedCell = null;
+            eliminatedAPiece = false;
         }
         private void CheckForPromotion(CellViewModel obj)
         {
@@ -135,9 +165,9 @@ namespace Checkers_Game.Service
         private void ShowPossibleMoves() 
         {
             possibleMoves = game.GetReachableCells(firstSelectedCell);
-            foreach(var item in possibleMoves)
+            foreach (var item in possibleMoves)
             {
-                ChangeBackgroundColor(item, PieceColorEnum.GREEN);
+                ChangeBackgroundColor(item.Key, PieceColorEnum.GREEN);
             }
         }
 
@@ -145,8 +175,22 @@ namespace Checkers_Game.Service
         {
             foreach (var item in possibleMoves)
             {
-                RevertToOriginalBackgroundColor(item);
+                RevertToOriginalBackgroundColor(item.Key);
             }
+        }
+
+        private void KeepOnlyMovesThatEliminateEnemyPiece()
+        {
+            var filteredMoves = possibleMoves.Where(item => item.Value == true)
+                                              .ToDictionary(item => item.Key, item => item.Value);
+            foreach(var item in possibleMoves)
+            {
+                if (!filteredMoves.ContainsKey(item.Key))
+                    RevertToOriginalBackgroundColor(item.Key);
+            }
+
+            possibleMoves = filteredMoves;
+
         }
     }
 }

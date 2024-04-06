@@ -58,9 +58,9 @@ namespace Checkers_Game.ViewModel
             }
         }
 
-        private List<CellViewModel> GetReachableCellsForIndices(CellViewModel currentCell, List<Tuple<int,int>> moveIndices)
+        private Dictionary<CellViewModel, bool> GetReachableCellsForIndices(CellViewModel currentCell, List<Tuple<int,int>> moveIndices)
         {
-            List<CellViewModel> reachableCells = new List<CellViewModel>();
+            Dictionary<CellViewModel, bool> reachableCells = new Dictionary<CellViewModel, bool>();
             foreach (var move in moveIndices)
             {
                 int newRow = currentCell.SimpleCell.Row + move.Item1;
@@ -77,18 +77,18 @@ namespace Checkers_Game.ViewModel
                             continue;
                         if (GameBoard[newOverRow][newOverColumn].SimpleCell.Piece != null)
                             continue;
-                        reachableCells.Add(GameBoard[newOverRow][newOverColumn]);
+                        reachableCells.Add(GameBoard[newOverRow][newOverColumn], true);
                     }
                     continue;
                 }
-                reachableCells.Add(GameBoard[newRow][newColumn]);
+                reachableCells.Add(GameBoard[newRow][newColumn], false);
             }
             return reachableCells;
         }
 
-        public List<CellViewModel> GetReachableCells(CellViewModel currentCell)
+        public Dictionary<CellViewModel, bool> GetReachableCells(CellViewModel currentCell)
         {
-            List<CellViewModel> reachableCells = null;
+            Dictionary<CellViewModel, bool> reachableCells = null;
 
             switch(currentCell.SimpleCell.Piece.Color)
             {
@@ -112,6 +112,18 @@ namespace Checkers_Game.ViewModel
         {
             GameBoard[row][column].SimpleCell.Piece = null;
             GameBoard[row][column].NotifyThatPieceChanged();
+        }
+
+        public int GetNumberOfPiecesOfAColor(PieceColorEnum pieceColorEnum)
+        {
+            int nr = 0;
+            for(int i=0;i<GameBoard.Count;++i)
+            {
+                for (int j = 0; j < GameBoard[i].Count; ++j)
+                    if (GameBoard[i][j].SimpleCell.Piece != null && GameBoard[i][j].SimpleCell.Piece.Color == pieceColorEnum)
+                        nr++;
+            }
+            return nr;
         }
     }
 }
