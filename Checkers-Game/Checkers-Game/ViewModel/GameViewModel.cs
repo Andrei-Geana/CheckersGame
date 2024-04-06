@@ -1,4 +1,5 @@
-﻿using Checkers_Game.Model;
+﻿using Checkers_Game.Command;
+using Checkers_Game.Model;
 using Checkers_Game.Service;
 using System;
 using System.Collections.Generic;
@@ -7,13 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation.Peers;
+using System.Windows.Input;
 
 namespace Checkers_Game.ViewModel
 {
     public class GameViewModel : BaseViewModel
     {
         private GameLogic _gameLogic;
-        private ObservableCollection<ObservableCollection<Cell>> _gameBoard;
+        private ObservableCollection<ObservableCollection<CellViewModel>> _gameBoard;
         private Player _player1;
         private Player _player2;
         private Player _currentPlayer;
@@ -21,8 +23,7 @@ namespace Checkers_Game.ViewModel
         public GameViewModel()
         {
             _gameLogic = new GameLogic(this);
-            _gameBoard = Helper.GetNewBoard();
-            GameBoard = CellBoardToCellVMBoard(_gameBoard);
+            _gameBoard = CellBoardToCellVMBoard(Helper.GetNewBoard());
             Player1 = new Player("player1", PieceColorEnum.BLACK);
             Player2 = new Player("player2", PieceColorEnum.WHITE);
             CurrentPlayer = Player1;
@@ -44,7 +45,18 @@ namespace Checkers_Game.ViewModel
             }
             return result;
         }
-        public ObservableCollection<ObservableCollection<CellViewModel>> GameBoard { get; set; }
+        public ObservableCollection<ObservableCollection<CellViewModel>> GameBoard 
+        { 
+            get
+            {
+                return _gameBoard;
+            }
+            set
+            {
+                _gameBoard = value;
+                OnPropertyChanged(nameof(GameBoard));
+            }
+        }
         public Player Player1 { get => _player1; set => _player1 = value; }
         public Player Player2 { get => _player2; set => _player2 = value; }
         public Player CurrentPlayer 
@@ -124,6 +136,25 @@ namespace Checkers_Game.ViewModel
                         nr++;
             }
             return nr;
+        }
+
+        private ICommand _newGameButton;
+        public ICommand NewGameButton
+        {
+            get
+            {
+                if (_newGameButton == null)
+                {
+                    _newGameButton = new RelayCommand<object>(param => ResetGame());
+                }
+                return _newGameButton;
+            }
+        }
+
+        private void ResetGame()
+        {
+            GameBoard = CellBoardToCellVMBoard(Helper.GetNewBoard());
+            CurrentPlayer = Player1;
         }
     }
 }

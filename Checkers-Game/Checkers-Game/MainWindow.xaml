@@ -23,7 +23,7 @@
         <DockPanel Grid.Column="0" Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New Game" />
+                    <MenuItem Header="_New Game" Command="{Binding NewGameButton}"/>
                     <MenuItem Header="_Save" />
                     <MenuItem Header="_Open" />
                     <MenuItem Header="_Allow multiple jumps" />

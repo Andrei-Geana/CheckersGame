@@ -20,7 +20,7 @@ namespace Checkers_Game.Service
         Dictionary<CellViewModel, bool> possibleMoves;
 
         bool eliminatedAPiece = false;
-        bool canMultipleJump = true;
+        bool canMultipleJump = false;
 
         public GameLogic(GameViewModel gameViewModel) { game = gameViewModel; }
 
@@ -63,13 +63,11 @@ namespace Checkers_Game.Service
                     KeepOnlyMovesThatEliminateEnemyPiece();
                     if (possibleMoves.Count < 1)
                     {
-                        //RevertPossibleMoves();
                         SwitchPlayerTurn();
                     }
                     else
                     {
                         ChangeBackgroundColor(firstSelectedCell, PieceColorEnum.BLUE);
-                        //ShowPossibleMoves();
                     }
                 }
                 else 
@@ -95,6 +93,7 @@ namespace Checkers_Game.Service
 
             if (currentCell.SimpleCell.Piece != null && currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color)
                 return true;
+
             return possibleMoves.ContainsKey(currentCell);
         }
 
@@ -112,7 +111,7 @@ namespace Checkers_Game.Service
             toCell.NotifyThatPieceChanged();
             fromCell.NotifyThatPieceChanged();
 
-            //for multiplejump
+
             if (canMultipleJump is true && eliminatedAPiece is true)
             {
                 firstSelectedCell = toCell;
