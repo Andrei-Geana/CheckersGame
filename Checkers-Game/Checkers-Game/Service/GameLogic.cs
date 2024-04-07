@@ -177,7 +177,7 @@ namespace Checkers_Game.Service
 
         private void RevertToOriginalBackgroundColor(CellViewModel obj)
         {
-            Helper.ResetColor(obj);
+            Helper.ResetColor(obj.SimpleCell);
             obj.NotifyThatPieceChanged();
         }
         private void ChangeBackgroundColor(CellViewModel obj, PieceColorEnum color)

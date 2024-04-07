@@ -24,7 +24,7 @@
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Header="_New Game" Command="{Binding NewGameButton}"/>
-                    <MenuItem Header="_Save" />
+                    <MenuItem Header="_Save" Command="{Binding SaveGameButton}"/>
                     <MenuItem Header="_Open" Command="{Binding OpenGameButton}"/>
                     <MenuItem Header="_Allow multiple jumps" IsCheckable="True" IsChecked="{Binding Multiple_Jump_Setting, UpdateSourceTrigger=PropertyChanged}" />
                     <MenuItem Header="_Show possible moves" IsCheckable="True" IsChecked="{Binding Show_Possible_Moves_Setting, UpdateSourceTrigger=PropertyChanged}" />

@@ -164,6 +164,21 @@ namespace Checkers_Game.ViewModel
                 return _openGameButton;
             }
         }
+
+        private ICommand _saveButton;
+        public ICommand SaveGameButton
+        {
+            get
+            {
+                if (_saveButton == null)
+                {
+                    _saveButton = new RelayCommand<object>(param => SaveGame());
+                }
+                return _saveButton;
+            }
+        }
+
+
         public void ResetGame()
         {
             GameBoard = CellBoardToCellVMBoard(Helper.GetNewStandardBoard());
@@ -196,13 +211,52 @@ namespace Checkers_Game.ViewModel
             }
         }
 
+        public void SaveGame()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text|*.txt;*.|All files|*.*";
+            openFileDialog.Multiselect = false;
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            if (openFileDialog.ShowDialog() is true)
+            {
+                string sourceFilePath = openFileDialog.FileName;
+                Console.Write(sourceFilePath);
+                Helper.SaveGame(sourceFilePath, CreateCurrentGameState());    
+            }
+        }
+
+        private GameState CreateCurrentGameState()
+        {
+            GameState gamestate = new GameState();
+
+            gamestate.Size = GameBoard.Count;
+
+            if(CurrentPlayer.Color == PieceColorEnum.BLACK)
+            {
+                gamestate.CurrentPlayer = "BLACK";
+            }
+
+            List<Cell> cells = new List<Cell>();
+            foreach(var row in GameBoard)
+            {
+                foreach(var column in row)
+                {
+                    if (column.SimpleCell.Piece is null)
+                        continue;
+                    cells.Add(column.SimpleCell);
+                }
+            }
+            gamestate.Cells = cells;
+            return gamestate;
+        }
+
         private void ApplyGameState(GameState state)
         {
             if (state is null) return;
             GameBoard = CellBoardToCellVMBoard(state.GetBoard());
 
             //should be changed
-            if (state.GetCurrentPlayer() == "WHITE")
+            if (state.CurrentPlayer == "WHITE")
             {
                 CurrentPlayer = Player2;
             }

@@ -1,4 +1,5 @@
 ﻿using Checkers_Game.Model;
+using Checkers_Game.Properties;
 using Checkers_Game.ViewModel;
 using Newtonsoft.Json;
 using System;
@@ -138,6 +139,15 @@ namespace Checkers_Game.Service
             return game;
         }
 
+        public static void SaveGame(string filePath, GameState game)
+        {
+            if (game == null) return;
+            string jsonContent = JsonConvert.SerializeObject(game);
+
+            // Write JSON content to a file
+            File.WriteAllText(filePath, jsonContent);
+        }
+
         public static GameSettings LoadSettings(string filePath)
         {
             string jsonContent = File.ReadAllText(filePath);
@@ -158,16 +168,16 @@ namespace Checkers_Game.Service
 
         }
 
-        public static void ResetColor(CellViewModel obj)
+        public static void ResetColor(Cell obj)
         {
-            PieceColorEnum color = (obj.SimpleCell.Row + obj.SimpleCell.Column) % 2 != 0 ? PieceColorEnum.BLACK : PieceColorEnum.WHITE;
+            PieceColorEnum color = (obj.Row + obj.Column) % 2 != 0 ? PieceColorEnum.BLACK : PieceColorEnum.WHITE;
             switch(color)
             {
                 case PieceColorEnum.BLACK:
-                    obj.SimpleCell.BackgroundColor = nameof(PieceColorEnum.BLACK);
+                    obj.BackgroundColor = nameof(PieceColorEnum.BLACK);
                     break;
                 case PieceColorEnum.WHITE:
-                    obj.SimpleCell.BackgroundColor = nameof(PieceColorEnum.WHITE);
+                    obj.BackgroundColor = nameof(PieceColorEnum.WHITE);
                     break;
             }
         }

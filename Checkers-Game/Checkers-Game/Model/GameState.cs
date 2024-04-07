@@ -20,21 +20,23 @@ namespace Checkers_Game.Model
         private int size;
         public GameState() 
         { }
+        [JsonIgnore]
+        public string CurrentPlayer { get => _currentPlayer; set => _currentPlayer = value; }
+        [JsonIgnore]
+        public List<Cell> Cells { get => _cells; set => _cells = value; }
+        [JsonIgnore]
+        public int Size { get => size; set => size = value; }
 
         public ObservableCollection<ObservableCollection<Cell>> GetBoard()
         {
-            var board = Helper.GetNewEmptyBoard(size, size);
-            foreach(var cell in _cells)
+            var board = Helper.GetNewEmptyBoard(Size, Size);
+            foreach(var cell in Cells)
             {
                 board[cell.Row][cell.Column] = cell;
             }
             return board;
         }
 
-        public string GetCurrentPlayer()
-        {
-            return _currentPlayer;
-        }
 
     }
 }
