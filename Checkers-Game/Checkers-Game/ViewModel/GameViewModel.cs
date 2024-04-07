@@ -21,7 +21,6 @@ namespace Checkers_Game.ViewModel
         private Player _player1;
         private Player _player2;
         private Player _currentPlayer;
-        private GameState _gameState;
         public GameViewModel()
         {
             _gameLogic = new GameLogic(this);
@@ -47,8 +46,8 @@ namespace Checkers_Game.ViewModel
             }
             return result;
         }
-        public ObservableCollection<ObservableCollection<CellViewModel>> GameBoard 
-        { 
+        public ObservableCollection<ObservableCollection<CellViewModel>> GameBoard
+        {
             get
             {
                 return _gameBoard;
@@ -61,18 +60,18 @@ namespace Checkers_Game.ViewModel
         }
         public Player Player1 { get => _player1; set => _player1 = value; }
         public Player Player2 { get => _player2; set => _player2 = value; }
-        public Player CurrentPlayer 
-        { 
+        public Player CurrentPlayer
+        {
             get => _currentPlayer;
             set
             {
-                if(_currentPlayer == value) return;
+                if (_currentPlayer == value) return;
                 _currentPlayer = value;
                 OnPropertyChanged(nameof(CurrentPlayer));
             }
         }
 
-        private Dictionary<CellViewModel, bool> GetReachableCellsForIndices(CellViewModel currentCell, List<Tuple<int,int>> moveIndices)
+        private Dictionary<CellViewModel, bool> GetReachableCellsForIndices(CellViewModel currentCell, List<Tuple<int, int>> moveIndices)
         {
             Dictionary<CellViewModel, bool> reachableCells = new Dictionary<CellViewModel, bool>();
             foreach (var move in moveIndices)
@@ -83,7 +82,7 @@ namespace Checkers_Game.ViewModel
                     continue;
                 if (GameBoard[newRow][newColumn].SimpleCell.Piece != null)
                 {
-                    if(GameBoard[newRow][newColumn].SimpleCell.Piece.Color != currentCell.SimpleCell.Piece.Color)
+                    if (GameBoard[newRow][newColumn].SimpleCell.Piece.Color != currentCell.SimpleCell.Piece.Color)
                     {
                         int newOverRow = newRow + move.Item1;
                         int newOverColumn = newColumn + move.Item2;
@@ -104,7 +103,7 @@ namespace Checkers_Game.ViewModel
         {
             Dictionary<CellViewModel, bool> reachableCells = null;
 
-            switch(currentCell.SimpleCell.Piece.Color)
+            switch (currentCell.SimpleCell.Piece.Color)
             {
                 case PieceColorEnum.BLACK:
                     if (currentCell.SimpleCell.Icon == Helper.BlackPawnPath)
@@ -131,7 +130,7 @@ namespace Checkers_Game.ViewModel
         public int GetNumberOfPiecesOfAColor(PieceColorEnum pieceColorEnum)
         {
             int nr = 0;
-            for(int i=0;i<GameBoard.Count;++i)
+            for (int i = 0; i < GameBoard.Count; ++i)
             {
                 for (int j = 0; j < GameBoard[i].Count; ++j)
                     if (GameBoard[i][j].SimpleCell.Piece != null && GameBoard[i][j].SimpleCell.Piece.Color == pieceColorEnum)
@@ -174,6 +173,8 @@ namespace Checkers_Game.ViewModel
 
         public void LoadGameState()
         {
+            //might add messagebox that requests to save a model input file
+
             //open input messagebox
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text|*.txt;*.|All files|*.*";
@@ -189,11 +190,10 @@ namespace Checkers_Game.ViewModel
             }
             else
             {
+                //testing
                 GameState gamestate = Helper.LoadSavedGame("D:\\facultate\\an2\\sem2\\MAP\\Tema2MAP\\Checkers-Game\\Checkers-Game\\Resource\\savedGame.txt");
                 ApplyGameState(gamestate);
             }
-
-
         }
 
         private void ApplyGameState(GameState state)
@@ -211,5 +211,30 @@ namespace Checkers_Game.ViewModel
 
         }
 
+        public bool Multiple_Jump_Setting
+        {
+            get
+            {
+                return _gameLogic.CanMultipleJump;
+            }
+            set
+            {
+                _gameLogic.CanMultipleJump = value;
+                OnPropertyChanged(nameof(Multiple_Jump_Setting));
+            }
+        }
+
+        public bool Show_Possible_Moves_Setting
+        {
+            get
+            {
+                return _gameLogic.CanShowPossibleMoves;
+            }
+            set
+            {
+                _gameLogic.CanShowPossibleMoves = value;
+                OnPropertyChanged(nameof(Show_Possible_Moves_Setting));
+            }
+        }
     }
 }

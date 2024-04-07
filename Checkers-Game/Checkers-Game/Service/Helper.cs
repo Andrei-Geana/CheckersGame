@@ -138,6 +138,26 @@ namespace Checkers_Game.Service
             return game;
         }
 
+        public static GameSettings LoadSettings(string filePath)
+        {
+            string jsonContent = File.ReadAllText(filePath);
+            GameSettings settings = JsonConvert.DeserializeObject<GameSettings>(jsonContent, new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            });
+            return settings;
+        }
+
+        public static void SaveSettings(string filePath, GameSettings settings)
+        {
+            if (settings == null) return;
+            string jsonContent = JsonConvert.SerializeObject(settings);
+
+            // Write JSON content to a file
+            File.WriteAllText(filePath, jsonContent);
+
+        }
+
         public static void ResetColor(CellViewModel obj)
         {
             PieceColorEnum color = (obj.SimpleCell.Row + obj.SimpleCell.Column) % 2 != 0 ? PieceColorEnum.BLACK : PieceColorEnum.WHITE;

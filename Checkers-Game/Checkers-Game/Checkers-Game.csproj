@@ -59,6 +59,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Command\RelayCommand.cs" />
+    <Compile Include="Model\GameSettings.cs" />
     <Compile Include="Model\GameState.cs" />
     <Compile Include="Service\GameLogic.cs" />
     <Compile Include="Service\Helper.cs" />

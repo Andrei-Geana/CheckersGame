@@ -1,3 +1,1 @@
-﻿{
-	"multi-jump" : "true"
-}
+{"multi-jump":false,"show-possible-moves":false}

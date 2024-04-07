@@ -20,10 +20,48 @@ namespace Checkers_Game.Service
         //toCell, bool if it eliminates enemy piece
         Dictionary<CellViewModel, bool> possibleMoves;
 
-        bool eliminatedAPiece = false;
-        bool canMultipleJump = false;
+        private bool eliminatedAPiece = false;
+        private GameSettings gameSettings;
 
-        public GameLogic(GameViewModel gameViewModel) { game = gameViewModel; }
+        private static string settingsPath = "D:\\facultate\\an2\\sem2\\MAP\\Tema2MAP\\Checkers-Game\\Checkers-Game\\Resource\\settings.txt";
+
+
+        public GameLogic(GameViewModel gameViewModel) 
+        { 
+            game = gameViewModel;
+            gameSettings = Helper.LoadSettings(settingsPath);
+        }
+        public bool CanMultipleJump
+        {
+            get
+            {
+                return gameSettings.MultiJump;
+            }
+            set
+            {
+                if (value != gameSettings.MultiJump)
+                {
+                    gameSettings.MultiJump = value;
+                    Helper.SaveSettings(settingsPath, gameSettings);
+                }
+            }
+        }
+
+        public bool CanShowPossibleMoves
+        {
+            get
+            {
+                return gameSettings.ShowPossibleMoves;
+            }
+            set
+            {
+                if (value != gameSettings.ShowPossibleMoves)
+                {
+                    gameSettings.ShowPossibleMoves = value;
+                    Helper.SaveSettings(settingsPath, gameSettings);
+                }
+            }
+        }
 
         public void ClickAction(CellViewModel obj)
         {
@@ -58,7 +96,7 @@ namespace Checkers_Game.Service
                 SwitchPiece(obj, firstSelectedCell);
                 CheckForPromotion(obj);
 
-                if (eliminatedAPiece is true && canMultipleJump is true)
+                if (eliminatedAPiece is true && CanMultipleJump is true)
                 {
                     ShowPossibleMoves();
                     KeepOnlyMovesThatEliminateEnemyPiece();
@@ -84,7 +122,7 @@ namespace Checkers_Game.Service
             if (firstSelectedCell == null)
                 return currentCell.SimpleCell.Piece != null && currentCell.SimpleCell.Piece.Color == game.CurrentPlayer.Color;
 
-            if (canMultipleJump is true && eliminatedAPiece is true)
+            if (CanMultipleJump is true && eliminatedAPiece is true)
             {
                 return possibleMoves.ContainsKey(currentCell);
             }
@@ -113,7 +151,7 @@ namespace Checkers_Game.Service
             fromCell.NotifyThatPieceChanged();
 
 
-            if (canMultipleJump is true && eliminatedAPiece is true)
+            if (CanMultipleJump is true && eliminatedAPiece is true)
             {
                 firstSelectedCell = toCell;
             }
@@ -165,6 +203,8 @@ namespace Checkers_Game.Service
         private void ShowPossibleMoves() 
         {
             possibleMoves = game.GetReachableCells(firstSelectedCell);
+            if (CanShowPossibleMoves is false)
+                return;
             foreach (var item in possibleMoves)
             {
                 ChangeBackgroundColor(item.Key, PieceColorEnum.GREEN);
