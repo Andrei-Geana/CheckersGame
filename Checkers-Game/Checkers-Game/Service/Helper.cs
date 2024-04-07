@@ -143,8 +143,6 @@ namespace Checkers_Game.Service
         {
             if (game == null) return;
             string jsonContent = JsonConvert.SerializeObject(game);
-
-            // Write JSON content to a file
             File.WriteAllText(filePath, jsonContent);
         }
 
@@ -162,8 +160,6 @@ namespace Checkers_Game.Service
         {
             if (settings == null) return;
             string jsonContent = JsonConvert.SerializeObject(settings);
-
-            // Write JSON content to a file
             File.WriteAllText(filePath, jsonContent);
 
         }

@@ -198,8 +198,6 @@ namespace Checkers_Game.ViewModel
             if (openFileDialog.ShowDialog() is true)
             {
                 string sourceFilePath = openFileDialog.FileName;
-                Console.Write(sourceFilePath);
-
                 GameState gamestate = Helper.LoadSavedGame(sourceFilePath);
                 ApplyGameState(gamestate);
             }
@@ -213,14 +211,20 @@ namespace Checkers_Game.ViewModel
 
         public void SaveGame()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            SaveFileDialog openFileDialog = new SaveFileDialog();
             openFileDialog.Filter = "Text|*.txt;*.|All files|*.*";
-            openFileDialog.Multiselect = false;
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             if (openFileDialog.ShowDialog() is true)
             {
                 string sourceFilePath = openFileDialog.FileName;
-                Console.Write(sourceFilePath);
+
+                bool fileExists = File.Exists(sourceFilePath);
+
+                if (!fileExists)
+                {
+                    File.Create(sourceFilePath);
+                }
+
                 Helper.SaveGame(sourceFilePath, CreateCurrentGameState());    
             }
         }
@@ -234,6 +238,11 @@ namespace Checkers_Game.ViewModel
             if(CurrentPlayer.Color == PieceColorEnum.BLACK)
             {
                 gamestate.CurrentPlayer = "BLACK";
+            }
+            else
+            {
+                gamestate.CurrentPlayer = "WHITE";
+
             }
 
             List<Cell> cells = new List<Cell>();
