@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Checkers_Game" xmlns:local1="clr-namespace:Checkers_Game.ViewModel"
         mc:Ignorable="d"
-        Title="Checkers" Height="500" Width="800">
+        Title="Checkers classic" Height="500" Width="800">
     <Window.DataContext>
         <local1:GameViewModel/>
     </Window.DataContext>
@@ -30,10 +30,10 @@
                     <MenuItem Header="_Show possible moves" IsCheckable="True" IsChecked="{Binding Show_Possible_Moves_Setting, UpdateSourceTrigger=PropertyChanged}" />
                     <MenuItem Header="_Statistics"/>
                     <Separator />
-                    <MenuItem Header="_Exit" />
+                    <MenuItem Header="_Exit" Click="ExitItem_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Help">
-                    <MenuItem Header="_About" />
+                    <MenuItem Header="_About" Click="AboutItem_Click"/>
                 </MenuItem>
             </Menu>
         </DockPanel>

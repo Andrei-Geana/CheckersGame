@@ -1,0 +1,38 @@
+﻿<Window x:Class="Checkers_Game.View.AboutView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Checkers_Game.View"
+        mc:Ignorable="d"
+        Title="About" Height="450" Width="800">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.4*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="5 0 0 0">        
+            <Label Margin="0" Foreground="DarkBlue" FontSize="15">Creator:</Label>
+            <Label Margin="0">Andrei Geană</Label>
+            <Label Margin="0" Foreground="DarkBlue">Institutional email:</Label>
+            <Label Margin="0">niculae.geana@student.unitbv.ro</Label>
+            <Label Margin="0" Foreground="DarkBlue">Grupa:</Label>
+            <Label Margin="0">10LF222</Label>
+        </StackPanel>
+
+        <Label Grid.Row="0" Grid.Column="2"  Margin="5" Foreground="DarkBlue" HorizontalAlignment="Left" VerticalAlignment="Bottom">Descriere</Label>
+        <TextBlock Grid.Row="1" Grid.RowSpan="3" Grid.Column="2" TextWrapping="Wrap"
+                   FontSize="15" Margin="15" FontFamily="Arial" Foreground="Black" FontStretch="UltraExpanded" TextAlignment="Justify">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis sapien ut est commodo ultrices. Duis in ultrices sapien. Vestibulum efficitur commodo sem, 
+            non tempor ex elementum et. Maecenas est risus, tristique at vestibulum sed, tempus id odio. Morbi ipsum lectus, congue auctor gravida eget, congue et nisl. 
+            Fusce sem nulla, dignissim ut sapien in, gravida mollis tellus. Integer egestas justo ac nisi facilisis feugiat. Vivamus at feugiat leo, nec fringilla neque. 
+            Proin malesuada viverra lectus, eget luctus sem pulvinar convallis. Nam venenatis tempor diam, varius vulputate est cursus et. Class aptent taciti sociosqu ad 
+            litora torquent per conubia nostra, per inceptos himenaeos.
+        </TextBlock>
+    </Grid>
+</Window>
