@@ -159,12 +159,28 @@ namespace Checkers_Game.Service
 
         private void SwitchPlayerTurn()
         {
-            if (game.CurrentPlayer == game.Player1)
-                game.CurrentPlayer = game.Player2;
-            else
-                game.CurrentPlayer = game.Player1;
             firstSelectedCell = null;
             eliminatedAPiece = false;
+            //GetNumberOfPiecesOfAColor
+            if (game.CurrentPlayer == game.Player1)
+            {
+                if (game.GetNumberOfPiecesOfAColor(game.Player2.Color) < 1)
+                {
+
+                    game.EndGame();
+                    return;
+                }
+                game.CurrentPlayer = game.Player2;
+            }
+            else
+            {
+                if (game.GetNumberOfPiecesOfAColor(game.Player1.Color) < 1)
+                {
+                    game.EndGame();
+                    return;
+                }
+                game.CurrentPlayer = game.Player1;
+            }
         }
         private void CheckForPromotion(CellViewModel obj)
         {

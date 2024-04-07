@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Input;
 
@@ -25,8 +26,8 @@ namespace Checkers_Game.ViewModel
         {
             _gameLogic = new GameLogic(this);
             _gameBoard = CellBoardToCellVMBoard(Helper.GetNewStandardBoard());
-            Player1 = new Player("player1", PieceColorEnum.BLACK);
-            Player2 = new Player("player2", PieceColorEnum.WHITE);
+            Player1 = new Player("black", PieceColorEnum.BLACK, GetNumberOfPiecesOfAColor(PieceColorEnum.BLACK));
+            Player2 = new Player("white", PieceColorEnum.WHITE, GetNumberOfPiecesOfAColor(PieceColorEnum.WHITE));
             CurrentPlayer = Player1;
         }
 
@@ -58,8 +59,26 @@ namespace Checkers_Game.ViewModel
                 OnPropertyChanged(nameof(GameBoard));
             }
         }
-        public Player Player1 { get => _player1; set => _player1 = value; }
-        public Player Player2 { get => _player2; set => _player2 = value; }
+        public Player Player1
+        {
+            get => _player1;
+            set
+            {
+                if (_player1 == value) return;
+                _player1 = value;
+                OnPropertyChanged(nameof(Player1));
+            }
+        }
+        public Player Player2
+        {
+            get => _player2;
+            set
+            {
+                if (_player2 == value) return;
+                _player2 = value;
+                OnPropertyChanged(nameof(Player2));
+            }
+        }
         public Player CurrentPlayer
         {
             get => _currentPlayer;
@@ -123,8 +142,19 @@ namespace Checkers_Game.ViewModel
 
         public void EliminatePieceAt(int row, int column)
         {
+            if (CurrentPlayer == Player2)
+            {
+                Player1.Score -= 1;
+                NotifyScores();
+            }
+            else
+            {
+                Player2.Score -= 1;
+                NotifyScores();
+            }
             GameBoard[row][column].SimpleCell.Piece = null;
             GameBoard[row][column].NotifyThatPieceChanged();
+
         }
 
         public int GetNumberOfPiecesOfAColor(PieceColorEnum pieceColorEnum)
@@ -183,6 +213,7 @@ namespace Checkers_Game.ViewModel
         {
             GameBoard = CellBoardToCellVMBoard(Helper.GetNewStandardBoard());
             CurrentPlayer = Player1;
+            RecalculateScores();
         }
 
 
@@ -263,15 +294,26 @@ namespace Checkers_Game.ViewModel
         {
             if (state is null) return;
             GameBoard = CellBoardToCellVMBoard(state.GetBoard());
-
+            RecalculateScores();
             //should be changed
             if (state.CurrentPlayer == "WHITE")
             {
                 CurrentPlayer = Player2;
             }
             else
+            {
                 CurrentPlayer = Player1;
+            }
+        }
 
+        public void EndGame()
+        {
+            Player winner = Player1.Score > Player2.Score ? Player1 : Player2;
+            string message = "Winner is: " + winner.Username;
+            message += "\nScore: " + winner.Score.ToString(); 
+            MessageBox.Show(message, "Game has ended", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            ResetGame();
         }
 
         public bool Multiple_Jump_Setting
@@ -299,5 +341,19 @@ namespace Checkers_Game.ViewModel
                 OnPropertyChanged(nameof(Show_Possible_Moves_Setting));
             }
         }
+
+        private void RecalculateScores()
+        {
+            Player1.Score = GetNumberOfPiecesOfAColor(PieceColorEnum.BLACK); 
+            Player2.Score = GetNumberOfPiecesOfAColor(PieceColorEnum.WHITE);
+            NotifyScores();
+        }
+
+        private void NotifyScores()
+        {
+            OnPropertyChanged(nameof(Player1));
+            OnPropertyChanged(nameof(Player2));
+        }
+
     }
 }

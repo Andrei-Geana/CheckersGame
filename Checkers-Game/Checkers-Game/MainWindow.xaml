@@ -69,7 +69,14 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
-        <Label Grid.Row="1" Grid.Column="1" FontSize="15" Margin="10,165,-10,-165">Now moving:</Label>
+
+        <TextBox Grid.Row="1" Grid.Column="1" FontSize="15" Text="{Binding Player2.Username}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" FontSize="15" Text="{Binding Player2.Score, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <TextBox Grid.Row="1" Grid.Column="1" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                   Text="{Binding Player1.Username}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                   Text="{Binding Player1.Score, UpdateSourceTrigger=PropertyChanged}"/>
+
         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentPlayer.Color, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25"/>
     </Grid>
