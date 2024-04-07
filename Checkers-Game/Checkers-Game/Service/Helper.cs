@@ -1,8 +1,10 @@
 ﻿using Checkers_Game.Model;
 using Checkers_Game.ViewModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -60,7 +62,7 @@ namespace Checkers_Game.Service
         public static List<Tuple<int, int>> moveIndicesForBlack;
         public static List<Tuple<int, int>> moveIndicesForKings;
 
-        public static ObservableCollection<ObservableCollection<Cell>> GetNewBoard(int nrRows=0, int nrColumns=0)
+        public static ObservableCollection<ObservableCollection<Cell>> GetNewStandardBoard(int nrRows=0, int nrColumns=0)
         {
             if (nrRows == 0)
             {
@@ -96,6 +98,44 @@ namespace Checkers_Game.Service
                 board.Add(row);
             }
             return board;
+        }
+
+        public static ObservableCollection<ObservableCollection<Cell>> GetNewEmptyBoard(int nrRows = 0, int nrColumns = 0)
+        {
+            if (nrRows == 0)
+            {
+                nrRows = numberOfRows;
+                nrColumns = numberOfColumns;
+            }
+            else
+            {
+                numberOfRows = nrRows;
+                numberOfColumns = nrColumns;
+            }
+
+            ObservableCollection<ObservableCollection<Cell>> board = new ObservableCollection<ObservableCollection<Cell>>();
+            for (int i = 0; i < nrRows; ++i)
+            {
+                ObservableCollection<Cell> row = new ObservableCollection<Cell>();
+                for (int j = 0; j < nrColumns; ++j)
+                {
+                    PieceColorEnum backgroundColor = (i + j) % 2 != 0 ? PieceColorEnum.BLACK : PieceColorEnum.WHITE;
+                    Cell cell = new Cell(i, j, backgroundColor);
+                    row.Add(cell);
+                }
+                board.Add(row);
+            }
+            return board;
+        }
+
+        public static GameState LoadSavedGame(string filePath)
+        {
+            string jsonContent = File.ReadAllText(filePath);
+            GameState game = JsonConvert.DeserializeObject<GameState>(jsonContent, new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            });
+            return game;
         }
 
         public static void ResetColor(CellViewModel obj)

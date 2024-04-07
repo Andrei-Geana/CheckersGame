@@ -1,4 +1,5 @@
 ﻿using Checkers_Game.Service;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,15 @@ namespace Checkers_Game.Model
 {
     public class Cell
     {
+        [JsonIgnore]
         private int _row;
+        [JsonIgnore]
         private int _column;
+        [JsonIgnore]
         private Piece _piece;
+        [JsonIgnore]
         private PieceColorEnum _backgroundColor;
-
+        public Cell() { }
         public Cell(int row, int column, PieceColorEnum _backgroundColor, Piece piece=null)
         {
             Row = row;
@@ -21,10 +26,13 @@ namespace Checkers_Game.Model
             Piece = piece;
             this._backgroundColor = _backgroundColor;
         }
-
+        [JsonProperty("row")]
         public int Row { get => _row; set => _row = value; }
+        [JsonProperty("column")]
         public int Column { get => _column; set => _column = value; }
+        [JsonProperty("piece")]
         public Piece Piece { get => _piece; set => _piece = value; }
+        [JsonIgnore]
         public string BackgroundColor 
         {
             get
@@ -70,6 +78,7 @@ namespace Checkers_Game.Model
             }
         }
 
+        [JsonIgnore]
         public string Icon
         {
             get 

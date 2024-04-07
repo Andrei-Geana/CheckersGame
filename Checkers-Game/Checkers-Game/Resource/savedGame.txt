@@ -1,0 +1,43 @@
+﻿{
+	"current-player": "WHITE",
+	"size" : "8",
+	"cells":
+	[
+		{
+			"piece":
+			{
+				"type" : "PAWN",
+				"color" : "WHITE"
+			},
+			"row" : "1",
+			"column" : "1"
+		},
+		{
+			"piece":
+			{
+				"type" : "PAWN",
+				"color" : "BLACK"
+			},
+			"row" : "1",
+			"column" : "2"
+		},
+		{
+			"piece":
+			{
+				"type" : "KING",
+				"color" : "WHITE"
+			},
+			"row" : "1",
+			"column" : "3"
+		},
+		{
+			"piece":
+			{
+				"type" : "KING",
+				"color" : "BLACK"
+			},
+			"row" : "1",
+			"column" : "4"
+		}
+	]
+}

@@ -1,5 +1,6 @@
 ﻿using Checkers_Game.Model;
 using Checkers_Game.ViewModel;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -191,5 +192,6 @@ namespace Checkers_Game.Service
             possibleMoves = filteredMoves;
 
         }
+
     }
 }

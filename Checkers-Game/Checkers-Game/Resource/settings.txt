@@ -1,1 +1,3 @@
-﻿1 #value for multi-jump setting, 1-true, 0-false
+﻿{
+	"multi-jump" : "true"
+}

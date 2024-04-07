@@ -1,9 +1,11 @@
 ﻿using Checkers_Game.Command;
 using Checkers_Game.Model;
 using Checkers_Game.Service;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,11 +21,11 @@ namespace Checkers_Game.ViewModel
         private Player _player1;
         private Player _player2;
         private Player _currentPlayer;
-
+        private GameState _gameState;
         public GameViewModel()
         {
             _gameLogic = new GameLogic(this);
-            _gameBoard = CellBoardToCellVMBoard(Helper.GetNewBoard());
+            _gameBoard = CellBoardToCellVMBoard(Helper.GetNewStandardBoard());
             Player1 = new Player("player1", PieceColorEnum.BLACK);
             Player2 = new Player("player2", PieceColorEnum.WHITE);
             CurrentPlayer = Player1;
@@ -151,10 +153,63 @@ namespace Checkers_Game.ViewModel
             }
         }
 
-        private void ResetGame()
+        private ICommand _openGameButton;
+        public ICommand OpenGameButton
         {
-            GameBoard = CellBoardToCellVMBoard(Helper.GetNewBoard());
+            get
+            {
+                if (_openGameButton == null)
+                {
+                    _openGameButton = new RelayCommand<object>(param => LoadGameState());
+                }
+                return _openGameButton;
+            }
+        }
+        public void ResetGame()
+        {
+            GameBoard = CellBoardToCellVMBoard(Helper.GetNewStandardBoard());
             CurrentPlayer = Player1;
         }
+
+
+        public void LoadGameState()
+        {
+            //open input messagebox
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text|*.txt;*.|All files|*.*";
+            openFileDialog.Multiselect = false;
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            if (openFileDialog.ShowDialog() is true)
+            {
+                string sourceFilePath = openFileDialog.FileName;
+                Console.Write(sourceFilePath);
+
+                GameState gamestate = Helper.LoadSavedGame(sourceFilePath);
+                ApplyGameState(gamestate);
+            }
+            else
+            {
+                GameState gamestate = Helper.LoadSavedGame("D:\\facultate\\an2\\sem2\\MAP\\Tema2MAP\\Checkers-Game\\Checkers-Game\\Resource\\savedGame.txt");
+                ApplyGameState(gamestate);
+            }
+
+
+        }
+
+        private void ApplyGameState(GameState state)
+        {
+            if (state is null) return;
+            GameBoard = CellBoardToCellVMBoard(state.GetBoard());
+
+            //should be changed
+            if (state.GetCurrentPlayer() == "WHITE")
+            {
+                CurrentPlayer = Player2;
+            }
+            else
+                CurrentPlayer = Player1;
+
+        }
+
     }
 }
