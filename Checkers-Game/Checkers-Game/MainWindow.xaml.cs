@@ -36,5 +36,11 @@ namespace Checkers_Game
             Window aboutWindow = new AboutView();
             aboutWindow.Show();
         }
+
+        private void StatisticsItem_Click(object sender, RoutedEventArgs e)
+        {
+            Window statsWindow = new StatisticsView();
+            statsWindow.Show();
+        }
     }
 }

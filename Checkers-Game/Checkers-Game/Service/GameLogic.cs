@@ -67,7 +67,6 @@ namespace Checkers_Game.Service
         {
             if (firstSelectedCell == null)
             {
-                //MessageBox.Show("Ai apasat un buton de la " + obj.SimpleCell.Row.ToString() + "," + obj.SimpleCell.Column.ToString());
                 firstSelectedCell = obj;
                 ChangeBackgroundColor(firstSelectedCell, PieceColorEnum.BLUE);
                 ShowPossibleMoves();
@@ -109,9 +108,10 @@ namespace Checkers_Game.Service
                         ChangeBackgroundColor(firstSelectedCell, PieceColorEnum.BLUE);
                     }
                 }
-                else 
+                else
+                {
                     SwitchPlayerTurn();
-                
+                }                
             }
         }
 
@@ -159,9 +159,6 @@ namespace Checkers_Game.Service
 
         private void SwitchPlayerTurn()
         {
-            firstSelectedCell = null;
-            eliminatedAPiece = false;
-            //GetNumberOfPiecesOfAColor
             if (game.CurrentPlayer == game.Player1)
             {
                 if (game.GetNumberOfPiecesOfAColor(game.Player2.Color) < 1)
@@ -181,6 +178,8 @@ namespace Checkers_Game.Service
                 }
                 game.CurrentPlayer = game.Player1;
             }
+            firstSelectedCell = null;
+            eliminatedAPiece = false;
         }
         private void CheckForPromotion(CellViewModel obj)
         {

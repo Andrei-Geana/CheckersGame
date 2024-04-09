@@ -26,8 +26,8 @@ namespace Checkers_Game.ViewModel
         {
             _gameLogic = new GameLogic(this);
             _gameBoard = CellBoardToCellVMBoard(Helper.GetNewStandardBoard());
-            Player1 = new Player("black", PieceColorEnum.BLACK, GetNumberOfPiecesOfAColor(PieceColorEnum.BLACK));
-            Player2 = new Player("white", PieceColorEnum.WHITE, GetNumberOfPiecesOfAColor(PieceColorEnum.WHITE));
+            Player1 = new Player("player1", PieceColorEnum.BLACK, GetNumberOfPiecesOfAColor(PieceColorEnum.BLACK));
+            Player2 = new Player("player2", PieceColorEnum.WHITE, GetNumberOfPiecesOfAColor(PieceColorEnum.WHITE));
             CurrentPlayer = Player1;
         }
 
@@ -313,6 +313,10 @@ namespace Checkers_Game.ViewModel
             message += "\nScore: " + winner.Score.ToString(); 
             MessageBox.Show(message, "Game has ended", MessageBoxButton.OK, MessageBoxImage.Information);
 
+            GameStat winnerStats = new GameStat();
+            winnerStats.Color = winner.Color;
+            winnerStats.MaxScore = winner.Score;
+            Helper.UpdateStatsInFile("D:\\facultate\\an2\\sem2\\MAP\\Tema2MAP\\Checkers-Game\\Checkers-Game\\Resource\\statistics.txt", winnerStats);
             ResetGame();
         }
 

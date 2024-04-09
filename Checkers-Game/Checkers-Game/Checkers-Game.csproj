@@ -62,7 +62,13 @@
     </ApplicationDefinition>
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="Model\GameSettings.cs" />
+    <Compile Include="Model\GameStat.cs" />
     <Compile Include="Model\GameState.cs" />
+    <Compile Include="ViewModel\StatisticsViewModel.cs" />
+    <Compile Include="View\StatisticsView.xaml.cs">
+      <DependentUpon>StatisticsView.xaml</DependentUpon>
+    </Compile>
+    <Content Include="Resource\statistics.txt" />
     <Compile Include="Service\GameLogic.cs" />
     <Compile Include="Service\Helper.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
@@ -84,6 +90,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StatisticsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

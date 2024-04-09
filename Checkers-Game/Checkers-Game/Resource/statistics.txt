@@ -1,0 +1,1 @@
+[{"color":"BLACK","number-of-wins":4,"max-score":2},{"color":"WHITE","number-of-wins":0,"max-score":0}]

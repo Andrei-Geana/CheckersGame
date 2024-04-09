@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,14 +16,6 @@ namespace Checkers_Game.Service
     public class Helper
     {
         Helper() { }
-
-        //move for kings
-        /*
-                Tuple.Create(-1, 1),
-                Tuple.Create(1, 1),
-                Tuple.Create(1, -1),
-                Tuple.Create(-1, -1)
-         */
 
         static Helper()
         {
@@ -162,6 +155,42 @@ namespace Checkers_Game.Service
             string jsonContent = JsonConvert.SerializeObject(settings);
             File.WriteAllText(filePath, jsonContent);
 
+        }
+
+        public static List<GameStat> LoadStats(string filePath)
+        {
+            string jsonContent = File.ReadAllText(filePath);
+            List<GameStat> stats = JsonConvert.DeserializeObject<List<GameStat>>(jsonContent, new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            });
+            return stats;
+        }
+
+        public static void UpdateStatsInFile(string filePath, GameStat stat)
+        {
+            List<GameStat> statsInFile = LoadStats(filePath);
+            if (statsInFile == null) return;
+            foreach(var item in statsInFile) 
+            {
+                if(item.Color == stat.Color)
+                {
+                    if(item.MaxScore < stat.MaxScore)
+                    {
+                        item.MaxScore = stat.MaxScore;
+                    }
+                    item.NumberOfWins++;
+                    break;
+                }
+            }
+            SaveStatsInFile(filePath, statsInFile);
+        }
+
+        public static void SaveStatsInFile(string filePath, List<GameStat> stats)
+        {
+            if (stats == null || stats.Count==0) return;
+            string jsonContent = JsonConvert.SerializeObject(stats);
+            File.WriteAllText(filePath, jsonContent);
         }
 
         public static void ResetColor(Cell obj)
