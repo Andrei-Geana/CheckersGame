@@ -165,6 +165,8 @@ namespace Checkers_Game.Service
                 {
 
                     game.EndGame();
+                    firstSelectedCell = null;
+                    eliminatedAPiece = false;
                     return;
                 }
                 game.CurrentPlayer = game.Player2;
@@ -174,6 +176,8 @@ namespace Checkers_Game.Service
                 if (game.GetNumberOfPiecesOfAColor(game.Player1.Color) < 1)
                 {
                     game.EndGame();
+                    firstSelectedCell = null;
+                    eliminatedAPiece = false;
                     return;
                 }
                 game.CurrentPlayer = game.Player1;
