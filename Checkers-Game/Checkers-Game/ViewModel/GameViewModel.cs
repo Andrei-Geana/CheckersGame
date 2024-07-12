@@ -235,7 +235,7 @@ namespace Checkers_Game.ViewModel
             else
             {
                 //testing
-                GameState gamestate = Helper.LoadSavedGame("D:\\facultate\\an2\\sem2\\MAP\\Tema2MAP\\Checkers-Game\\Checkers-Game\\Resource\\savedGame.txt");
+                GameState gamestate = Helper.LoadSavedGame("D:\\Projects\\CheckersGame\\Checkers-Game\\Checkers-Game\\Resource\\savedGame.txt");
                 ApplyGameState(gamestate);
             }
         }
@@ -316,7 +316,7 @@ namespace Checkers_Game.ViewModel
             GameStat winnerStats = new GameStat();
             winnerStats.Color = winner.Color;
             winnerStats.MaxScore = winner.Score;
-            Helper.UpdateStatsInFile("D:\\facultate\\an2\\sem2\\MAP\\Tema2MAP\\Checkers-Game\\Checkers-Game\\Resource\\statistics.txt", winnerStats);
+            Helper.UpdateStatsInFile("D:\\Projects\\CheckersGame\\Checkers-Game\\Checkers-Game\\Resource\\statistics.txt", winnerStats);
             ResetGame();
         }
 

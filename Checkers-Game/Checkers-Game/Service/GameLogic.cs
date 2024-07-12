@@ -23,7 +23,7 @@ namespace Checkers_Game.Service
         private bool eliminatedAPiece = false;
         private GameSettings gameSettings;
 
-        private static string settingsPath = "D:\\facultate\\an2\\sem2\\MAP\\Tema2MAP\\Checkers-Game\\Checkers-Game\\Resource\\settings.txt";
+        private static string settingsPath = "D:\\Projects\\CheckersGame\\Checkers-Game\\Checkers-Game\\Resource\\settings.txt";
 
 
         public GameLogic(GameViewModel gameViewModel) 

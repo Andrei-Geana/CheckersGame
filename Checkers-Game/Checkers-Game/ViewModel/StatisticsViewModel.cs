@@ -15,7 +15,7 @@ namespace Checkers_Game.ViewModel
 
         public StatisticsViewModel()
         {
-            GameStats = Helper.LoadStats("D:\\facultate\\an2\\sem2\\MAP\\Tema2MAP\\Checkers-Game\\Checkers-Game\\Resource\\statistics.txt");
+            GameStats = Helper.LoadStats("D:\\Projects\\CheckersGame\\Checkers-Game\\Checkers-Game\\Resource\\statistics.txt");
         }
     }
 }
